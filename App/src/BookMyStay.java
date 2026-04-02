@@ -3,31 +3,32 @@ import java.util.HashMap;
 public class BookMyStay {
 
     private HashMap<String, Integer> inventory;
+    private HashMap<String, Double> roomPrices;
 
     public BookMyStay() {
         inventory = new HashMap<>();
+        roomPrices = new HashMap<>();
     }
 
-    public void addRoomType(String roomType, int count) {
-        inventory.put(roomType, count);
+    public void addRoomType(String type, int count, double price) {
+        inventory.put(type, count);
+        roomPrices.put(type, price);
     }
 
-    public int getAvailability(String roomType) {
-        return inventory.getOrDefault(roomType, 0);
-    }
+    public void searchRooms() {
+        System.out.println("Available Rooms:\n");
 
-    public void updateAvailability(String roomType, int newCount) {
-        if (inventory.containsKey(roomType)) {
-            inventory.put(roomType, newCount);
-        } else {
-            System.out.println("Room type not found!");
-        }
-    }
+        for (String type : inventory.keySet()) {
+            int available = inventory.get(type);
 
-    public void displayInventory() {
-        System.out.println("Current Room Inventory:");
-        for (String roomType : inventory.keySet()) {
-            System.out.println(roomType + " : " + inventory.get(roomType));
+            if (available > 0) {
+                double price = roomPrices.get(type);
+
+                System.out.println("Room Type: " + type);
+                System.out.println("Price: ₹" + price);
+                System.out.println("Available: " + available);
+                System.out.println();
+            }
         }
     }
 
@@ -35,18 +36,10 @@ public class BookMyStay {
 
         BookMyStay app = new BookMyStay();
 
-        app.addRoomType("Single", 10);
-        app.addRoomType("Double", 5);
-        app.addRoomType("Suite", 2);
+        app.addRoomType("Single", 5, 2000);
+        app.addRoomType("Double", 0, 3500);
+        app.addRoomType("Suite", 2, 5000);
 
-        app.displayInventory();
-
-        System.out.println("\nAvailable Single Rooms: "
-                + app.getAvailability("Single"));
-
-        app.updateAvailability("Single", 8);
-
-        System.out.println("\nAfter Update:");
-        app.displayInventory();
+        app.searchRooms();
     }
 }
